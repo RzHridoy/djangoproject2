@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <title>
+        {% block title %} HUT {% endblock %}
+    </title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="navbar-nav">
+        <li class="nav-itme active">
+            <a class="nav-link" href="{% url 'HomeView' %}">Home</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'ProfileView' %}">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'LogOutView' %}">Log Out</a>
+        </li>
+        {% else %}
+        <li class="nav-itme">
+            <a class="nav-link" href="{% url 'SignUpView' %}">Sign Up</a>
+        </li>
+        <li class="nav-itme">
+            <a class="nav-link" href="{% url 'LogInView' %}">Log In</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+<div class="container" style="padding: 20px">
+    {% block content %}
+
+    {% endblock %}
+</div>
+
+</body>
+</html>

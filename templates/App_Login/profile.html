@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{user.username}} {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-4">
+        {% if user.user_profile.profile_picture %}
+        <img src="/media/{{user.user_profile.profile_picture}}" class="rounded-circle" width="250px" height="250px">
+        {% else %}
+        <img src="/media/profile_pictures/default.jpg" class="rounded-circle" width="250px" height="250px">
+        {% endif %}
+        <p>
+            User: {{user.username}}<br>
+            Website: {{user.user_profile.website}}<br>
+            Facebook: {{user.user_profile.facebook}}
+        </p>
+        <a href="{% url 'EditProfileView' %}">Edit Profile</a>
+    </div>
+
+    <div class="col-sm-8">
+        <h2>Name: {{user.user_profile.full_name}}</h2>
+        <h6>
+            {{ user.post.count }} posts &nbsp;{{ user.follower.count }} followers &nbsp;{{ user.following.count }}
+            followings
+        </h6>
+        <h6>{{ user.user_profile.description | linebreaks }}</h6>
+        <hr>
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            Create Post
+        </button>
+
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Write Post</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit">Post</button>
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% for post in user.post.all %}
+        <div class="row" style="padding:30px">
+            <div class="col-sm-6">
+                <img src="/media/{{post.post_image}}" width="200px" height="200px">
+            </div>
+            <div class="col-sm-6">
+                <h3>{{post.caption}}</h3>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}
